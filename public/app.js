@@ -8,6 +8,26 @@ const noteContentArea = document.getElementById('note-content');
 let notes = []; // Local copy of notes
 let activeNoteId = null;
 
+// Debounce delay in milliseconds
+const DEBOUNCE_DELAY = 300;
+
+// Debounce function to limit the rate at which a function can fire
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+// Helper function to set cursor position in input/textarea
+function setCaretPosition(ctrl, pos) {
+    if (ctrl.setSelectionRange) {
+        ctrl.focus();
+        ctrl.setSelectionRange(pos, pos);
+    }
+}
+
 // Fetch initial notes from the server
 fetch('/api/notes')
     .then((res) => res.json())
@@ -71,9 +91,6 @@ newNoteBtn.addEventListener('click', () => {
     fetch('/api/notes', { method: 'POST' })
         .then((res) => res.json())
         .then((newNote) => {
-            // Remove the next two lines
-            // notes.push(newNote);
-            // renderNoteList();
             loadNote(newNote._id);
         });
 });
@@ -101,8 +118,8 @@ function deleteNote(noteId) {
         });
 }
 
-// Event listeners for title and content changes
-noteTitleInput.addEventListener('input', () => {
+// Debounced event listener for title input changes
+noteTitleInput.addEventListener('input', debounce(() => {
     const newTitle = noteTitleInput.value;
     const currentNote = notes.find((n) => n._id === activeNoteId);
 
@@ -110,9 +127,10 @@ noteTitleInput.addEventListener('input', () => {
         socket.emit('note-title-change', { noteId: activeNoteId, title: newTitle });
         updateNote(activeNoteId, newTitle, currentNote.content);
     }
-});
+}, DEBOUNCE_DELAY));
 
-noteContentArea.addEventListener('input', () => {
+// Debounced event listener for content textarea changes
+noteContentArea.addEventListener('input', debounce(() => {
     const newContent = noteContentArea.value;
     const currentNote = notes.find((n) => n._id === activeNoteId);
 
@@ -120,8 +138,9 @@ noteContentArea.addEventListener('input', () => {
         socket.emit('note-content-change', { noteId: activeNoteId, content: newContent });
         updateNote(activeNoteId, currentNote.title, newContent);
     }
-});
+}, DEBOUNCE_DELAY));
 
+// Update a note with new title and content
 function updateNote(noteId, newTitle, newContent) {
     // Update the note in the local notes array
     const noteIndex = notes.findIndex((n) => n._id === noteId);
@@ -151,6 +170,8 @@ function updateNote(noteId, newTitle, newContent) {
 }
 
 // Socket.IO event listeners for real-time updates
+
+// When a new note is created by any client
 socket.on('note-created', (newNote) => {
     // Check if the note already exists (to prevent duplicates)
     if (!notes.some((note) => note._id === newNote._id)) {
@@ -159,6 +180,7 @@ socket.on('note-created', (newNote) => {
     }
 });
 
+// When a note is deleted by any client
 socket.on('note-deleted', (deletedNoteId) => {
     notes = notes.filter((note) => note._id !== parseInt(deletedNoteId));
     if (activeNoteId === parseInt(deletedNoteId)) {
@@ -169,10 +191,14 @@ socket.on('note-deleted', (deletedNoteId) => {
     renderNoteList();
 });
 
+// When a note's content is changed by any client
 socket.on('note-content-changed', ({ noteId, content }) => {
     noteId = parseInt(noteId);
     if (noteId === activeNoteId) {
+        // Preserve the cursor position
+        const cursorPosition = noteContentArea.selectionStart;
         noteContentArea.value = content;
+        setCaretPosition(noteContentArea, cursorPosition);
     }
     const noteIndex = notes.findIndex((n) => n._id === noteId);
     if (noteIndex !== -1) {
@@ -180,10 +206,14 @@ socket.on('note-content-changed', ({ noteId, content }) => {
     }
 });
 
+// When a note's title is changed by any client
 socket.on('note-title-changed', ({ noteId, title }) => {
     noteId = parseInt(noteId);
     if (noteId === activeNoteId) {
+        // Preserve the cursor position
+        const cursorPosition = noteTitleInput.selectionStart;
         noteTitleInput.value = title;
+        setCaretPosition(noteTitleInput, cursorPosition);
     }
     const noteIndex = notes.findIndex((n) => n._id === noteId);
     if (noteIndex !== -1) {
@@ -192,13 +222,21 @@ socket.on('note-title-changed', ({ noteId, title }) => {
     renderNoteList();
 });
 
+// When a note is updated by any client
 socket.on('note-updated', (updatedNote) => {
     const noteIndex = notes.findIndex((n) => n._id === updatedNote._id);
     if (noteIndex !== -1) {
         notes[noteIndex] = updatedNote;
         if (updatedNote._id === activeNoteId) {
+            // Preserve the cursor position for title
+            const titleCursorPosition = noteTitleInput.selectionStart;
             noteTitleInput.value = updatedNote.title;
+            setCaretPosition(noteTitleInput, titleCursorPosition);
+
+            // Preserve the cursor position for content
+            const contentCursorPosition = noteContentArea.selectionStart;
             noteContentArea.value = updatedNote.content;
+            setCaretPosition(noteContentArea, contentCursorPosition);
         }
         renderNoteList();
     }
