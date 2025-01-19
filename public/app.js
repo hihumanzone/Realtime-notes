@@ -228,15 +228,23 @@ socket.on('note-updated', (updatedNote) => {
     if (noteIndex !== -1) {
         notes[noteIndex] = updatedNote;
         if (updatedNote._id === activeNoteId) {
-            // Preserve the cursor position for title
-            const titleCursorPosition = noteTitleInput.selectionStart;
-            noteTitleInput.value = updatedNote.title;
-            setCaretPosition(noteTitleInput, titleCursorPosition);
-
-            // Preserve the cursor position for content
-            const contentCursorPosition = noteContentArea.selectionStart;
-            noteContentArea.value = updatedNote.content;
-            setCaretPosition(noteContentArea, contentCursorPosition);
+            // If the user is typing in the title, only preserve the title's caret
+            if (document.activeElement === noteTitleInput) {
+                const titleCursorPosition = noteTitleInput.selectionStart;
+                noteTitleInput.value = updatedNote.title;
+                setCaretPosition(noteTitleInput, titleCursorPosition);
+            } 
+            // If the user is typing in the content, only preserve the content's caret
+            else if (document.activeElement === noteContentArea) {
+                const contentCursorPosition = noteContentArea.selectionStart;
+                noteContentArea.value = updatedNote.content;
+                setCaretPosition(noteContentArea, contentCursorPosition);
+            } 
+            // Otherwise, if nothing is focused, just update both fields without forcing focus
+            else {
+                noteTitleInput.value = updatedNote.title;
+                noteContentArea.value = updatedNote.content;
+            }
         }
         renderNoteList();
     }
