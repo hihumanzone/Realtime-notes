@@ -145,8 +145,14 @@ function updateNote(noteId, newTitle, newContent) {
     // Update the note in the local notes array
     const noteIndex = notes.findIndex((n) => n._id === noteId);
     if (noteIndex !== -1) {
+        const titleChanged = notes[noteIndex].title !== newTitle;
         notes[noteIndex].title = newTitle;
         notes[noteIndex].content = newContent;
+
+        // Only re-render the note list if the title has changed
+        if (titleChanged) {
+            renderNoteList();
+        }
     }
 
     // Send the update to the server
@@ -163,8 +169,10 @@ function updateNote(noteId, newTitle, newContent) {
         const noteIndex = notes.findIndex(n => n._id === updatedNote._id);
         if (noteIndex !== -1) {
             notes[noteIndex] = updatedNote;
+            if (titleChanged) {
+                renderNoteList();
+            }
         }
-        renderNoteList();
     })
     .catch(error => console.error('Error updating note:', error));
 }
