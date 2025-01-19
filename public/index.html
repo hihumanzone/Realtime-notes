@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Notes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div id="sidebar">
+            <h2>Notes</h2>
+            <ul id="note-list"></ul>
+            <button id="new-note">New Note</button>
+        </div>
+        <div id="main-content">
+            <input type="text" id="note-title" placeholder="Note Title">
+            <textarea id="note-content" placeholder="Write your note here..."></textarea>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
