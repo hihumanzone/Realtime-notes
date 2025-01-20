@@ -138,31 +138,6 @@ html, body {
   border-color: #4F8DFD;
 }
 
-.hidden {
-  width: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-#sidebar:not(.hidden) {
-  width: 300px;
-}
-
-#toggle-sidebar {
-  margin: 20px;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background: #4F8DFD;
-  color: #E0E0E0;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-#toggle-sidebar:hover {
-  background: #3B75DA;
-}
-
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
