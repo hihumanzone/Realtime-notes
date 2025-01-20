@@ -4,6 +4,12 @@ const noteList = document.getElementById('note-list');
 const newNoteBtn = document.getElementById('new-note');
 const noteTitleInput = document.getElementById('note-title');
 const noteContentArea = document.getElementById('note-content');
+const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+const sidebar = document.getElementById('sidebar');
+
+toggleSidebarBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('hidden');
+});
 
 let notes = []; // Local copy of notes
 let activeNoteId = null;
