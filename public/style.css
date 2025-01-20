@@ -162,35 +162,3 @@ html, body {
 ::-webkit-scrollbar-thumb:hover {
   background-color: #5F5F5F;
 }
-
-/* Mobile-Friendly Adjustments (for small screens) */
-@media (max-width: 650px) {
-  /* Stack sidebar on top for smaller devices */
-  .container {
-    flex-direction: column;
-    height: auto; /* Let the container's height adjust to content */
-  }
-
-  #sidebar {
-    width: 100%;
-    box-shadow: none;
-    border-radius: 0;
-  }
-
-  #main-content {
-    width: 100%;
-    flex: none; /* Allow content to size naturally on small screens */
-    border-radius: 0;
-    margin-top: 10px; /* Some spacing between sidebar and content */
-  }
-
-  #note-title {
-    font-size: 1rem;
-    margin-bottom: 8px;
-  }
-
-  #new-note {
-    width: 100%;
-    margin-top: 10px;
-  }
-}
