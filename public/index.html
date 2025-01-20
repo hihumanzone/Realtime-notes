@@ -1,18 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Real-time Notes</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-</head>
 <body>
     <div class="container">
-        <div id="sidebar">
+        <!-- Sidebar -->
+        <div id="sidebar" class="hidden">
+            <h2>Notes</h2>
             <ul id="note-list"></ul>
             <button id="new-note">New Note</button>
         </div>
+
+        <!-- Main Content -->
         <div id="main-content">
-            <input type="text" id="note-title" placeholder="Note Title">
+            <div class="header-bar">
+                <button id="toggle-sidebar">Toggle Sidebar</button>
+                <input type="text" id="note-title" placeholder="Note Title">
+            </div>
             <textarea id="note-content" placeholder="Write your note here..."></textarea>
         </div>
     </div>
@@ -20,4 +20,3 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="app.js"></script>
 </body>
-</html>
