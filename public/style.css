@@ -33,6 +33,35 @@ html, body {
   flex-direction: column;
 }
 
+/* Hide sidebar by default */
+#sidebar.hidden {
+  display: none;
+}
+
+/* Header bar to hold the toggle button and note title together */
+.header-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Toggle button style */
+#toggle-sidebar {
+  margin-right: 8px;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background: #4F8DFD;
+  color: #E0E0E0;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#toggle-sidebar:hover {
+  background: #3B75DA;
+}
+
 /* Note List */
 #note-list {
   list-style-type: none;
