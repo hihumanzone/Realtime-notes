@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Notes</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 <body>
     <div class="container">
         <!-- Sidebar -->
@@ -9,6 +16,7 @@
 
         <!-- Main Content -->
         <div id="main-content">
+            <!-- Header bar with toggle button and note title -->
             <div class="header-bar">
                 <button id="toggle-sidebar">Toggle Sidebar</button>
                 <input type="text" id="note-title" placeholder="Note Title">
@@ -20,3 +28,4 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="app.js"></script>
 </body>
+</html>
