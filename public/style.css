@@ -35,14 +35,6 @@ html, body {
   flex-direction: column;
 }
 
-/* Sidebar Heading */
-#sidebar h2 {
-  margin-bottom: 16px;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-  color: #fff;
-}
-
 /* Note List */
 #note-list {
   list-style-type: none;
