@@ -1,30 +1,24 @@
-/* style.css - Modern Minimalist Dark Theme */
+/* style.css - Responsive Minimalist Dark Theme */
 
-* {
-  box-sizing: border-box;
+/* Use a more mobile-friendly font size and spacing */
+html, body {
   margin: 0;
   padding: 0;
-  font-family: "Roboto", sans-serif;
-}
-
-html, body {
   width: 100%;
   height: 100%;
+  font-family: "Roboto", sans-serif;
   background-color: #121212;
   color: #E0E0E0;
 }
 
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+/* Container for sidebar and main content */
 .container {
-  width: 90%;
-  max-width: 1200px;
-  height: 90vh;
   display: flex;
+  flex-direction: row;
+  max-width: 1200px;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
   border-radius: 8px;
   background-color: #1E1E1E;
   overflow: hidden;
@@ -33,7 +27,7 @@ body {
 
 /* Sidebar */
 #sidebar {
-  width: 300px;
+  flex: 0 0 300px;
   background-color: #2A2A2A;
   padding: 20px;
   box-shadow: inset -1px 0 0 #333;
@@ -41,6 +35,7 @@ body {
   flex-direction: column;
 }
 
+/* Sidebar Heading */
 #sidebar h2 {
   margin-bottom: 16px;
   font-size: 1.2rem;
@@ -48,18 +43,21 @@ body {
   color: #fff;
 }
 
+/* Note List */
 #note-list {
-  list-style: none;
+  list-style-type: none;
   flex: 1;
   overflow-y: auto;
   margin-bottom: 16px;
+  padding: 0; /* Avoid default padding in some browsers */
 }
 
+/* Note Items in Sidebar */
 #note-list li {
   padding: 10px;
   margin-bottom: 6px;
-  border-radius: 4px;
   background-color: #3F3F3F;
+  border-radius: 4px;
   color: #E0E0E0;
   cursor: pointer;
   display: flex;
@@ -72,6 +70,7 @@ body {
   background-color: #5A5A5A;
 }
 
+/* Active Note Highlight */
 #note-list li.active {
   background-color: #616161;
 }
@@ -92,6 +91,7 @@ body {
   background-color: #757575;
 }
 
+/* New Note Button */
 #new-note {
   padding: 10px;
   border: none;
@@ -107,7 +107,7 @@ body {
   background: #3B75DA;
 }
 
-/* Main Content */
+/* Main Content Area */
 #main-content {
   flex: 1;
   display: flex;
@@ -115,8 +115,9 @@ body {
   padding: 20px;
 }
 
+/* Note Title Input */
 #note-title {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   margin-bottom: 12px;
   padding: 8px;
   background-color: #262626;
@@ -130,6 +131,7 @@ body {
   border-color: #4F8DFD;
 }
 
+/* Note Content Textarea */
 #note-content {
   flex: 1;
   resize: none;
@@ -150,16 +152,45 @@ body {
 ::-webkit-scrollbar {
   width: 8px;
 }
-
 ::-webkit-scrollbar-track {
   background-color: #2A2A2A;
 }
-
 ::-webkit-scrollbar-thumb {
   background-color: #4F4F4F;
   border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
   background-color: #5F5F5F;
+}
+
+/* Mobile-Friendly Adjustments (for small screens) */
+@media (max-width: 650px) {
+  /* Stack sidebar on top for smaller devices */
+  .container {
+    flex-direction: column;
+    height: auto; /* Let the container's height adjust to content */
+  }
+
+  #sidebar {
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  #main-content {
+    width: 100%;
+    flex: none; /* Allow content to size naturally on small screens */
+    border-radius: 0;
+    margin-top: 10px; /* Some spacing between sidebar and content */
+  }
+
+  #note-title {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  #new-note {
+    width: 100%;
+    margin-top: 10px;
+  }
 }
