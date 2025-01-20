@@ -195,11 +195,24 @@ socket.on('note-deleted', (deletedNoteId) => {
 socket.on('note-content-changed', ({ noteId, content }) => {
     noteId = parseInt(noteId);
     if (noteId === activeNoteId) {
-        // Preserve the cursor position
-        const cursorPosition = noteContentArea.selectionStart;
+        // Capture the current content and cursor position before updating
+        const oldContent = noteContentArea.value;
+        const oldCursorPosition = noteContentArea.selectionStart;
+        
+        // Determine if the cursor was at the end of the text
+        const wasAtEnd = (oldCursorPosition === oldContent.length);
+        
+        // Update the text area with new content
         noteContentArea.value = content;
-        setCaretPosition(noteContentArea, cursorPosition);
+        
+        // If the user was at the end, move them to the new end, otherwise preserve old position
+        if (wasAtEnd) {
+            setCaretPosition(noteContentArea, noteContentArea.value.length);
+        } else {
+            setCaretPosition(noteContentArea, oldCursorPosition);
+        }
     }
+    
     const noteIndex = notes.findIndex((n) => n._id === noteId);
     if (noteIndex !== -1) {
         notes[noteIndex].content = content;
